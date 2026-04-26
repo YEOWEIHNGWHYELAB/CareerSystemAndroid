@@ -15,7 +15,8 @@ import kotlinx.coroutines.launch
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     private val configManager = ConfigManager(application)
-    private val repository = StatRepository(configManager.getBaseUrl()!!)
+    private val baseUrl = configManager.getBaseUrl() ?: throw IllegalStateException("Base URL not configured")
+    private val repository = StatRepository(baseUrl)
 
     var stats by mutableStateOf<StatResponse?>(null)
         private set
