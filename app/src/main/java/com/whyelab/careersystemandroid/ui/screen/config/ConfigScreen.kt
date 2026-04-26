@@ -1,6 +1,7 @@
 package com.whyelab.careersystemandroid.ui.screen.config
 
 import com.whyelab.careersystemandroid.data.local.ConfigManager
+import com.whyelab.careersystemandroid.util.isValidIp
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -27,6 +28,8 @@ fun ConfigScreen(onSave: () -> Unit) {
     var ip by remember { mutableStateOf("") }
     var port by remember { mutableStateOf("8080") }
 
+    var ipError by remember { mutableStateOf<String?>(null) }
+
     Column(modifier = Modifier.padding(16.dp)) {
 
         Text("Enter Backend Config", style = MaterialTheme.typography.headlineSmall)
@@ -50,8 +53,19 @@ fun ConfigScreen(onSave: () -> Unit) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = {
-            configManager.saveBaseUrl(ip, port)
+            val resultIp = ip.trim()
+            val resultPort = port.trim()
+
+            if (!isValidIp(resultIp)) {
+                ipError = "Invalid IP address"
+                return@Button
+            }
+
+            ipError = null
+
+            configManager.saveBaseUrl(resultIp, resultPort)
             onSave()
+
         }) {
             Text("Save & Continue")
         }
