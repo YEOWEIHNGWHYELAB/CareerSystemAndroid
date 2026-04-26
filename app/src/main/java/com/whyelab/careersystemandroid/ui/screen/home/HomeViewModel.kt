@@ -20,10 +20,21 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     var stats by mutableStateOf<StatResponse?>(null)
         private set
+    var isLoading by mutableStateOf(false)
+    var error by mutableStateOf<String?>(null)
 
     fun loadStats() {
         viewModelScope.launch {
-            stats = repository.getStats()
+            isLoading = true
+            error = null
+
+            try {
+                stats = repository.getStats()
+            } catch (e: Exception) {
+                error = e.message
+            }
+
+            isLoading = false
         }
     }
 }
