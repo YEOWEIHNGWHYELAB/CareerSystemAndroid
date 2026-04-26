@@ -1,11 +1,10 @@
 package com.whyelab.careersystemandroid.data.repository
 
-import com.whyelab.careersystemandroid.data.model.StatResponse
 import com.whyelab.careersystemandroid.data.remote.RetrofitClient
 
-class StatRepository {
+class StatRepository(private val baseUrl: String) {
 
-    suspend fun getStats(): StatResponse {
-        return RetrofitClient.api.getStats()
-    }
+    private val api = RetrofitClient.getInstance(baseUrl)
+
+    suspend fun getStats() = api.getStats()
 }

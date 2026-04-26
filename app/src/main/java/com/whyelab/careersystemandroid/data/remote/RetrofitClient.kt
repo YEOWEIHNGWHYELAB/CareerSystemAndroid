@@ -5,13 +5,15 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
 
-    private const val BASE_URL = "http://192.168.68.52:8080/" // emulator
+    private var retrofit: Retrofit? = null
 
-    val api: ApiService by lazy {
-        Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(ApiService::class.java)
+    fun getInstance(baseUrl: String): ApiService {
+        if (retrofit == null) {
+            retrofit = Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        }
+        return retrofit!!.create(ApiService::class.java)
     }
 }

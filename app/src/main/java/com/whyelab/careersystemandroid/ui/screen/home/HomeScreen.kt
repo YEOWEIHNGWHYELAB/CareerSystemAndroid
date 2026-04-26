@@ -7,11 +7,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun HomeScreen(
+    viewModel: HomeViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+) {
 
     val stats = viewModel.stats
-    val isLoading = viewModel.isLoading
-    val error = viewModel.error
 
     LaunchedEffect(Unit) {
         viewModel.loadStats()
@@ -28,20 +28,12 @@ fun HomeScreen(viewModel: HomeViewModel = androidx.lifecycle.viewmodel.compose.v
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            when {
-                isLoading -> {
-                    Text("Loading...")
-                }
-
-                error != null -> {
-                    Text("Error: $error")
-                }
-
-                stats != null -> {
-                    Text("Companies: ${stats.total_companies}")
-                    Text("Jobs: ${stats.total_jobs}")
-                    Text("Applications: ${stats.total_application}")
-                }
+            if (stats == null) {
+                Text("Loading...")
+            } else {
+                Text("Companies: ${stats.total_companies}")
+                Text("Jobs: ${stats.total_jobs}")
+                Text("Applications: ${stats.total_application}")
             }
         }
     }
