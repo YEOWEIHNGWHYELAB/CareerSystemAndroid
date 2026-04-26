@@ -24,6 +24,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import android.content.Intent
+import android.net.Uri
+import android.util.Log
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun JobListScreen(
@@ -95,6 +99,9 @@ fun JobListScreen(
 
 @Composable
 fun JobItem(job: JobList) {
+
+    val context = LocalContext.current
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -112,7 +119,25 @@ fun JobItem(job: JobList) {
                 text = "Open Link",
                 color = Color(0xFF1976D2),
                 modifier = Modifier.clickable {
-                    // optional: open browser
+
+                    val rawUrl = job.link.trim()
+
+                    val url = when {
+                        rawUrl.startsWith("http://") || rawUrl.startsWith("https://") -> rawUrl
+                        rawUrl.isNotEmpty() -> "https://$rawUrl"
+                        else -> null
+                    }
+
+                    if (url == null)
+                        return@clickable
+
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+
+                    try {
+                        context.startActivity(intent)
+                    } catch (e: Exception) {
+                        Log.e("JOB_OPEN", "Failed to open link", e)
+                    }
                 }
             )
         }
