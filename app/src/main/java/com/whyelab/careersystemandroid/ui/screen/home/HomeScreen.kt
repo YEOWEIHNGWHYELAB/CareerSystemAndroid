@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 
@@ -30,14 +31,49 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Button(onClick = {
-                navController.navigate("config")
-            }) {
-                Text("Change Server")
+            Row {
+                Button(onClick = {
+                    navController.navigate("config")
+                }) {
+                    Text("Change Server")
+                }
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Button(
+                    onClick = {
+                        viewModel.loadStats()
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF1976D2), // blue (you can change this)
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text("Refresh")
+                }
             }
 
-            if (stats == null) {
-                Text("Loading...")
+            Spacer(modifier = Modifier.height(16.dp))
+
+            if (viewModel.error != null) {
+                Text(
+                    text = "Failed to load: $viewModel.error",
+                    color = MaterialTheme.colorScheme.error
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Button(onClick = {
+                    viewModel.loadStats()
+                }) {
+                    Text("Retry")
+                }
+
+            } else if (stats == null) {
+                if (viewModel.isLoading) {
+                    CircularProgressIndicator()
+                }
+
             } else {
                 Text("Companies: ${stats.total_companies}")
                 Text("Jobs: ${stats.total_jobs}")
