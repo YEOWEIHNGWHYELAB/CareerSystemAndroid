@@ -4,14 +4,16 @@ import com.whyelab.careersystemandroid.data.local.ConfigManager
 import com.whyelab.careersystemandroid.util.isValidIp
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -82,19 +84,35 @@ fun ConfigScreen(navController: NavController, onSave: () -> Unit) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Button(onClick = {
-                val resultIp = ip.trim()
-                val resultPort = port.trim()
-
-                if (!isValidIp(resultIp)) {
-                    ipError = "Invalid IP address"
-                    return@Button
+            Row {
+                Button(
+                    onClick = {
+                        navController.popBackStack()
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Red,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text("Back")
                 }
 
-                configManager.saveBaseUrl(resultIp, resultPort)
-                onSave()
-            }) {
-                Text("Save & Continue")
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Button(onClick = {
+                    val resultIp = ip.trim()
+                    val resultPort = port.trim()
+
+                    if (!isValidIp(resultIp)) {
+                        ipError = "Invalid IP address"
+                        return@Button
+                    }
+
+                    configManager.saveBaseUrl(resultIp, resultPort)
+                    onSave()
+                }) {
+                    Text("Save & Continue")
+                }
             }
         }
     }
