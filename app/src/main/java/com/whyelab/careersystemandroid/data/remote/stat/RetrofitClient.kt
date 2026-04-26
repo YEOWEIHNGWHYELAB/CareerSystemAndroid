@@ -1,4 +1,4 @@
-package com.whyelab.careersystemandroid.data.remote
+package com.whyelab.careersystemandroid.data.remote.stat
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

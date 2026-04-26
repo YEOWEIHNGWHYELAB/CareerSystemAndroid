@@ -42,6 +42,20 @@ fun HomeScreen(
 
                 Button(
                     onClick = {
+                        navController.navigate("jobs")
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0x911976D2),
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text("Jobs")
+                }
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Button(
+                    onClick = {
                         viewModel.loadStats()
                     },
                     colors = ButtonDefaults.buttonColors(

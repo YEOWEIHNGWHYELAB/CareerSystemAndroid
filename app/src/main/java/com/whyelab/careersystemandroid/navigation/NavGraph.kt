@@ -3,6 +3,7 @@ package com.whyelab.careersystemandroid.navigation
 import com.whyelab.careersystemandroid.data.local.ConfigManager
 import com.whyelab.careersystemandroid.ui.screen.config.ConfigScreen
 import com.whyelab.careersystemandroid.ui.screen.home.HomeScreen
+import com.whyelab.careersystemandroid.ui.screen.joblist.JobListScreen
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -31,6 +32,10 @@ fun NavGraph() {
 
         composable("home") {
             HomeScreen(navController)
+        }
+
+        composable("jobs") {
+            JobListScreen(navController)
         }
     }
 }
