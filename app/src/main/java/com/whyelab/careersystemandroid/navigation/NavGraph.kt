@@ -18,17 +18,19 @@ fun NavGraph() {
     val start = if (configManager.hasConfig()) "home" else "config"
 
     NavHost(navController = navController, startDestination = start) {
-
         composable("config") {
-            ConfigScreen {
-                navController.navigate("home") {
-                    popUpTo("config") { inclusive = true }
+            ConfigScreen(
+                navController = navController,
+                onSave = {
+                    navController.navigate("home") {
+                        popUpTo("config") { inclusive = true }
+                    }
                 }
-            }
+            )
         }
 
         composable("home") {
-            HomeScreen()
+            HomeScreen(navController)
         }
     }
 }

@@ -5,10 +5,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    navController: NavHostController,
+    viewModel: HomeViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
 ) {
 
     val stats = viewModel.stats
@@ -27,6 +29,12 @@ fun HomeScreen(
             Text("Dashboard", style = MaterialTheme.typography.headlineMedium)
 
             Spacer(modifier = Modifier.height(16.dp))
+
+            Button(onClick = {
+                navController.navigate("config")
+            }) {
+                Text("Change Server")
+            }
 
             if (stats == null) {
                 Text("Loading...")

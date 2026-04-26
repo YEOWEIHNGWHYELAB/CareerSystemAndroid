@@ -19,9 +19,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 
 @Composable
-fun ConfigScreen(onSave: () -> Unit) {
+fun ConfigScreen(navController: NavController, onSave: () -> Unit) {
     val context = LocalContext.current
     val configManager = remember { ConfigManager(context) }
 
@@ -38,8 +39,17 @@ fun ConfigScreen(onSave: () -> Unit) {
 
         OutlinedTextField(
             value = ip,
-            onValueChange = { ip = it },
-            label = { Text("IP Address") }
+            onValueChange = {
+                ip = it
+                ipError = null // clear error when user types
+            },
+            label = { Text("IP Address") },
+            isError = ipError != null,
+            supportingText = {
+                if (ipError != null) {
+                    Text(text = ipError!!, color = MaterialTheme.colorScheme.error)
+                }
+            }
         )
 
         Spacer(modifier = Modifier.height(8.dp))
